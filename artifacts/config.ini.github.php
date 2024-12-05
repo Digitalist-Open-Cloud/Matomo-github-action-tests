@@ -6,8 +6,7 @@
 host = 127.0.0.1
 username = root
 password =
-; we need to use piwik_tests here, as otherwise tests will fail for Matomo 4 versions before the rename
-dbname = piwik_tests
+dbname = matomo_tests
 adapter = PDO_MYSQL
 schema = Mysql
 ; no table prefix for tests on GitHub
@@ -22,7 +21,7 @@ enable_logging = 1
 host = 127.0.0.1
 username = root
 password =
-dbname = piwik_tests
+dbname = matomo_tests
 adapter = PDO_MYSQL
 schema = Mysql
 ; no table prefix for tests on GitHub

@@ -16,14 +16,6 @@ inputs:
       - IntegrationTestsCore
       - IntegrationTestsPlugins
     default: PluginTests
-  artifacts-pass:
-    description: "UI upload pass"
-    required: false
-  artifacts-protected:
-    type: boolean
-    description: "protect uploaded artifacts"
-    required: false
-    default: false
   plugin-name:
     description: "Name of the plugin to test"
     required: false
@@ -78,17 +70,8 @@ inputs:
     description: "Token used to checkout dependent plugins. Only required if private repo needs to be checked out"
     required: false
     default: ''
-  upload-artifacts:
-    type: boolean
-    description: "Defines if produced build artifacts should be uploaded or not. Only relevant for System, Plugins and UI tests"
-    required: false
-    default: false
   setup-script:
     description: "Additional setup script to run before starting tests. Can be used by plugin to e.g. set up LDAP or similar."
-    required: false
-    default: ''
-  testomatio:
-    description: "To enable Testomat.io reporter for tests, Testomat.io token should be set via this input"
     required: false
     default: ''
 
@@ -100,7 +83,7 @@ runs:
       if: inputs.mysql-service == 'true' && inputs.mysql-engine == 'Mysql'
       shell: bash
       run: |
-        docker run -d --tmpfs /var/lib/mysql:rw --tmpfs /bitnami/mysql/data:rw -v ${{ github.action_path }}/artifacts/my.cnf:/opt/bitnami/mysql/conf/my_custom.cnf:ro --name mysql -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MYSQL_DATABASE=matomo_tests bitnami/mysql:5.7
+        docker run -d --tmpfs /var/lib/mysql:rw --tmpfs /bitnami/mysql/data:rw -v ${{ github.action_path }}/artifacts/my.cnf:/opt/bitnami/mysql/conf/my_custom.cnf:ro --name mysql -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MYSQL_DATABASE=matomo_tests bitnami/mysql:8.0
         sleep 10
         mysql -h127.0.0.1 -uroot -e "SET GLOBAL sql_mode = 'NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES';SET GLOBAL wait_timeout = 36000;SET GLOBAL max_allowed_packet = 134209536;"
 
@@ -108,7 +91,7 @@ runs:
       if: inputs.mysql-service == 'true' && inputs.mysql-engine == 'Mariadb'
       shell: bash
       run: |
-        docker run -d --tmpfs /var/lib/mariadb:rw --tmpfs /bitnami/mariadb/data:rw -v ${{ github.action_path }}/artifacts/my.cnf:/opt/bitnami/mariadb/conf/my_custom.cnf:ro --name mariadb -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MARIADB_DATABASE=matomo_tests bitnami/mariadb:latest
+        docker run -d --tmpfs /var/lib/mariadb:rw --tmpfs /bitnami/mariadb/data:rw -v ${{ github.action_path }}/artifacts/my.cnf:/opt/bitnami/mariadb/conf/my_custom.cnf:ro --name mariadb -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MARIADB_DATABASE=matomo_tests bitnami/mariadb:11.6
         sleep 10
         mysql -h127.0.0.1 -uroot -e "SET GLOBAL sql_mode = 'NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES';SET GLOBAL wait_timeout = 36000;SET GLOBAL max_allowed_packet = 134209536;"
 
@@ -271,18 +254,3 @@ runs:
         echo "::group::PHP error log file"
         cat ${{ github.workspace }}/php-errors.log || true
         echo "::endgroup::"
-
-    - name: upload processed screenshots
-      if: always() && inputs.upload-artifacts == 'true' && (inputs.test-type == 'UI' || inputs.test-type == 'SystemTestsPlugins' || inputs.test-type == 'SystemTestsCore' || inputs.test-type == 'PluginTests')
-      shell: bash
-      run: ${{ github.action_path }}/scripts/bash/upload_artifacts.sh
-      env:
-        ARTIFACTS_PASS: ${{ inputs.artifacts-pass }}
-        ARTIFACTS_PROTECTED: ${{ inputs.artifacts-protected == 'true' }}
-        TEST_SUITE: ${{ inputs.test-type }}
-        PLUGIN_NAME: ${{ inputs.plugin-name }}
-        GITHUB_REPO: ${{ github.repository }}
-        GITHUB_BRANCH: ${{ github.head_ref || github.ref_name }}
-        GITHUB_RUN_ID: ${{ github.run-id }}
-        GITHUB_RUN_NUMBER: ${{ github.run-number }}
-        WORKSPACE: ${{ github.workspace }}/matomo
