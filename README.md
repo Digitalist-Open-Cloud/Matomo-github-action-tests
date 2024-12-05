@@ -98,6 +98,10 @@ Additional options to provide for UI tests. This can be used to split up UI test
 
 Additional options to provide for PHPUnit tests. This can be used to provide debugging options for PHPUnit.
 
+### debug
+
+Output information, like php config, matomo config etc. Defaults 'false'.
+
 ### Example usage for a Plugin
 
 ```yaml

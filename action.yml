@@ -74,6 +74,10 @@ inputs:
     description: "Additional setup script to run before starting tests. Can be used by plugin to e.g. set up LDAP or similar."
     required: false
     default: ''
+  debug:
+    description: "Verbose output"
+    required: false
+    default: 'false'
 
 runs:
   using: "composite"
@@ -232,13 +236,10 @@ runs:
         GITHUB_IS_TRIGGERED_BY_PUSH: ${{ github.event_name == 'push' && 'true' || 'false' }}
         MYSQL_ADAPTER: ${{ inputs.mysql-driver }}
         MYSQL_ENGINE: ${{ inputs.mysql-engine }}
-        TESTOMATIO: ${{ inputs.testomatio }}
-        TESTOMATIO_CREATE: 1
-        TESTOMATIO_ENV: PHP-${{ inputs.php-version }}, ${{ inputs.mysql-driver }}, ${{ inputs.mysql-engine }}
         TRAVIS: '1'
 
     - name: Debug informations
-      if: always()
+      if: ${{ inputs.debug_mode == 'true' }}
       working-directory: ${{ github.workspace }}/matomo
       shell: bash
       run: |
