@@ -109,20 +109,23 @@ Output information, like php config, matomo config etc. Defaults to 'false'.
 ### Example usage for a Plugin
 
 ```yaml
-  PluginTests:
-    runs-on: ubuntu-20.04
+on:
+  pull_request: {}
+  workflow_dispatch: {}
+  push:
+    branches: ["main"]
+jobs:
+  plugin:
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        php: [ '7.2', '8.1' ]
+        php: [ '8.2', '8.3' ]
         target: ['minimum_required_matomo', 'maximum_supported_matomo']
     steps:
-      - uses: actions/checkout@v3
-        with:
-          lfs: true
-          persist-credentials: false
+      - uses: actions/checkout@v4
       - name: Run tests
-        uses: matomo-org/github-action-tests@main
+        uses: Digitalist-Open-Cloud/Matomo-github-action-tests@main
         with:
           plugin-name: 'PluginName'
           php-version: ${{ matrix.php }}
@@ -130,4 +133,3 @@ Output information, like php config, matomo config etc. Defaults to 'false'.
           matomo-test-branch: ${{ matrix.target }}
           dependent-plugins: 'slug/plugin-AdditionalPlugin'
           github-token: ${{ secrets.TESTS_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-```

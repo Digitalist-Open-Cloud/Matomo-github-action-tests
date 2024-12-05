@@ -185,7 +185,6 @@ runs:
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
         restore-keys: ${{ runner.os }}-composer-${{ inputs.php-version }}
 
-    # setup apache etc
     - name: prepare setup
       shell: bash
       run: ${{ github.action_path }}/scripts/bash/prepare.sh
@@ -240,7 +239,6 @@ runs:
         GITHUB_IS_TRIGGERED_BY_PUSH: ${{ github.event_name == 'push' && 'true' || 'false' }}
         MYSQL_ADAPTER: ${{ inputs.mysql-driver }}
         MYSQL_ENGINE: ${{ inputs.mysql-engine }}
-        TRAVIS: '1'
 
     - name: Debug informations
       if: ${{ inputs.debug_mode == 'true' }}
