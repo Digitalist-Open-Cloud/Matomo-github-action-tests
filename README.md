@@ -98,9 +98,13 @@ Additional options to provide for UI tests. This can be used to split up UI test
 
 Additional options to provide for PHPUnit tests. This can be used to provide debugging options for PHPUnit.
 
+### coverage
+
+If you want code coverage reports, possible values are none, xdebug, pcov.
+
 ### debug
 
-Output information, like php config, matomo config etc. Defaults 'false'.
+Output information, like php config, matomo config etc. Defaults to 'false'.
 
 ### Example usage for a Plugin
 

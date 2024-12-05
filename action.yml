@@ -78,6 +78,10 @@ inputs:
     description: "Verbose output"
     required: false
     default: 'false'
+  coverage:
+    description: "Add code coverage. Possible values are none (default), xdebug, pcov"
+    required: false
+    default: 'none'
 
 runs:
   using: "composite"
@@ -134,7 +138,7 @@ runs:
           mysqli.allow_local_infile=On,
           opcache.enable=0
         tools: composer:v2
-        coverage: none
+        coverage:  ${{ inputs.coverage }}
 
     - name: Setup Node
       if: inputs.node-version != '' && inputs.plugin-name == ''
