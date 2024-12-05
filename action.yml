@@ -2,19 +2,8 @@ name: 'Matomo Tests'
 description: 'Runs Matomo Tests'
 inputs:
   test-type:
-    type: choice
     description: "Type of tests to run"
     required: true
-    options:
-      - UI
-      - PluginTests
-      - JS
-      - Client
-      - UnitTests
-      - SystemTestsPlugins
-      - SystemTestsCore
-      - IntegrationTestsCore
-      - IntegrationTestsPlugins
     default: PluginTests
   plugin-name:
     description: "Name of the plugin to test"
@@ -22,9 +11,6 @@ inputs:
   mysql-driver:
     description: "Mysql driver to use for testing. (Will be placed as config.ini.php setting)"
     required: false
-    options:
-      - PDO_MYSQL
-      - MYSQLI
     default: 'PDO_MYSQL'
   ui-test-options:
     description: "Additional options to run UI tests with"
@@ -41,21 +27,15 @@ inputs:
     required: false
     default: ''
   redis-service:
-    type: boolean
     description: "If true a redis master and sentinel will be set up before testing"
     required: false
-    default: false
+    default: 'false'
   mysql-service:
-    type: boolean
     description: "If true a MySQL engine will be set up. "
     required: false
-    default: true
+    default: 'true'
   mysql-engine:
     description: "MySQL database engine to use. Can be 'Mysql', 'Mariadb' or 'Tidb'"
-    options:
-      - Mysql
-      - Mariadb
-      - Tidb
     required: false
     default: 'Mysql'
   matomo-test-branch:
