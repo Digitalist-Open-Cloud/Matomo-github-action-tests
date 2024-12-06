@@ -17,16 +17,16 @@ if [ "$TEST_SUITE" = "UI" ]; then
     cd $WORKSPACE/matomo/plugins/$PLUGIN_NAME
     git lfs pull --exclude=
   fi
-  echo -e "${GREEN}setup fonts${SET}"
-  mkdir $HOME/.fonts
-  cp $ACTION_PATH/artifacts/fonts/* $HOME/.fonts
-  fc-cache -f -v
-  ls $HOME/.fonts
-  sudo sed -i -E 's/name="memory" value="[^"]+"/name="memory" value="2GiB"/g' /etc/ImageMagick-6/policy.xml
-  sudo sed -i -E 's/name="width" value="[^"]+"/name="width" value="64KP"/g' /etc/ImageMagick-6/policy.xml
-  sudo sed -i -E 's/name="height" value="[^"]+"/name="height" value="64KP"/g' /etc/ImageMagick-6/policy.xml
-  sudo sed -i -E 's/name="area" value="[^"]+"/name="area" value="1GiB"/g' /etc/ImageMagick-6/policy.xml
-  sudo sed -i -E 's/name="disk" value="[^"]+"/name="area" value="4GiB"/g' /etc/ImageMagick-6/policy.xml
+  # echo -e "${GREEN}setup fonts${SET}"
+  # mkdir $HOME/.fonts
+  # cp $ACTION_PATH/artifacts/fonts/* $HOME/.fonts
+  # fc-cache -f -v
+  # ls $HOME/.fonts
+  # sudo sed -i -E 's/name="memory" value="[^"]+"/name="memory" value="2GiB"/g' /etc/ImageMagick-6/policy.xml
+  # sudo sed -i -E 's/name="width" value="[^"]+"/name="width" value="64KP"/g' /etc/ImageMagick-6/policy.xml
+  # sudo sed -i -E 's/name="height" value="[^"]+"/name="height" value="64KP"/g' /etc/ImageMagick-6/policy.xml
+  # sudo sed -i -E 's/name="area" value="[^"]+"/name="area" value="1GiB"/g' /etc/ImageMagick-6/policy.xml
+  # sudo sed -i -E 's/name="disk" value="[^"]+"/name="area" value="4GiB"/g' /etc/ImageMagick-6/policy.xml
 
 fi
 
