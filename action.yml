@@ -201,9 +201,9 @@ runs:
         WORKSPACE: ${{ github.workspace }}
         ACTION_PATH: ${{ github.action_path }}
 
-    - name: Install package ripgrep
+    - name: Install needed packages
       shell: bash
-      run: sudo apt-get install ripgrep
+      run: sudo apt-get install ripgrep ttf-mscorefonts-installer imagemagick imagemagick-doc
       working-directory: ${{ github.workspace }}/matomo
 
     - name: Run tests
