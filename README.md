@@ -10,15 +10,10 @@ This is forked from <https://github.com/matomo-org/github-action-tests>. It was 
 
 Specifies the test types to run. This can be any of the following:
 
+- PluginTests (default)
 - UI
-- PluginTests
 - JS
 - Client
-- UnitTests
-- SystemTestsPlugins
-- SystemTestsCore
-- IntegrationTestsCore
-- IntegrationTestsPlugins
 
 ### plugin-name
 
