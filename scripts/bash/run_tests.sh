@@ -45,7 +45,7 @@ if [ -n "$TEST_SUITE" ]; then
     else
       ./console tests:run-ui --store-in-ui-tests-repo --persist-fixture-data --assume-artifacts --core --extra-options="$UITEST_EXTRA_OPTIONS"
     fi
-  else
+  elif [ "$TEST_SUITE" = "PluginTests" ]; then
     if [ -n "$PLUGIN_NAME" ]; then
       if [ -d "plugins/$PLUGIN_NAME/Test" ]; then
         ./vendor/phpunit/phpunit/phpunit --configuration ./tests/PHPUnit/phpunit.xml --colors --testsuite $TEST_SUITE $PHPUNIT_EXTRA_OPTIONS plugins/$PLUGIN_NAME/Test/ | tee phpunit.out
@@ -68,4 +68,7 @@ if [ -n "$TEST_SUITE" ]; then
       exit 0
     fi
   fi
+  else
+    echo "No testing suite defined"
+    exit 0
 fi
