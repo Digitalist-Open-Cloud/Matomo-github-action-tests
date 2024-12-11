@@ -136,7 +136,7 @@ runs:
         node-version: ${{ inputs.node-version }}
 
     - name: "Add PHPUnit matcher"
-      if: inputs.test-type = 'PluginTests'
+      if: inputs.test-type == 'PluginTests'
       shell: bash
       run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
