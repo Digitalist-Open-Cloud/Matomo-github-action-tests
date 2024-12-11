@@ -72,7 +72,7 @@ runs:
       shell: bash
       run: |
         docker run -d --tmpfs /var/lib/mysql:rw --tmpfs /bitnami/mysql/data:rw -v ${{ github.action_path }}/artifacts/my.cnf:/opt/bitnami/mysql/conf/my_custom.cnf:ro --name mysql -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MYSQL_DATABASE=matomo_tests bitnami/mysql:8.0
-        sleep 10
+        sleep 20
         mysql -h127.0.0.1 -uroot -e "SET GLOBAL sql_mode = 'NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES';SET GLOBAL wait_timeout = 36000;SET GLOBAL max_allowed_packet = 134209536;"
 
     - name: start mariadb services
