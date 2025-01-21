@@ -128,3 +128,23 @@ jobs:
           matomo-test-branch: ${{ matrix.target }}
           dependent-plugins: 'slug/plugin-AdditionalPlugin'
           github-token: ${{ secrets.TESTS_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+```
+### Documented configuration
+
+| Input | Description | Default |
+|-------|-------------|---------|
+| `test-type` | Specifies test types to run: `PluginTests`, `UI`, `JS`, or `Client` | `PluginTests` |
+| `plugin-name` | Name of the plugin to test. If not provided, tests run for Matomo itself | - |
+| `matomo-test-branch` | Version of Matomo to use for testing. Can be specific branch/tag or keywords: `minimum_required_matomo`, `maximum_supported_matomo` | - |
+| `php-version` | PHP version to use for testing | - |
+| `node-version` | Node version to use for testing (Not needed for PHP tests) | - |
+| `redis-service` | Whether to set up redis master and sentinel server | - |
+| `mysql-service` | Whether to set up MySQL server (MySQL 8.0 with tmpfs) | - |
+| `mysql-driver` | MySQL adapter for Matomo: `PDO_MYSQL` or `MYSQLI` | `PDO_MYSQL` |
+| `dependent-plugins` | Additional plugins to check out before testing (comma-separated list) | - |
+| `github-token` | GitHub access token for private repository access | - |
+| `setup-script` | Path to bash script to execute before running tests | - |
+| `ui-test-options` | Additional options for UI tests | - |
+| `phpunit-test-options` | Additional options for PHPUnit tests | - |
+| `coverage` | Code coverage reporting options: `none`, `xdebug`, `pcov` | - |
+| `debug` | Output debug information like PHP config, Matomo config | `false` |
