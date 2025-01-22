@@ -247,16 +247,6 @@ runs:
         cat ${{ github.workspace }}/php-errors.log || true
         echo "::endgroup::"
 
-    - name: Debug - Find coverage report
-      if: always()
-      shell: bash
-      run: |
-        pwd
-        echo "Current directory contents:"
-        ls -la
-        echo "\nSearching for html_report directory:"
-        find . -name "html_report" -type d
-
     - name: Upload Code Coverage HTML Report
       if: ${{ inputs.coverage-html-report == 'true' }}
       uses: actions/upload-artifact@v4
