@@ -5,9 +5,9 @@ SET='\033[0m'
 
 
 if [[ -z "${COVERAGE}" ]]; then
-  COVERAGE_OUT = '--coverage-text'
+  COVERAGE_OUT='--coverage-text'
 else
-  COVERAGE_OUT = ''
+  COVERAGE_OUT=''
 fi
 
 if [ -n "$TEST_SUITE" ]; then
