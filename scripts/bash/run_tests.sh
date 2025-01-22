@@ -73,7 +73,7 @@ if [ -n "$TEST_SUITE" ]; then
       ./vendor/phpunit/phpunit/phpunit --log-junit phpjunit.xml --configuration ./tests/PHPUnit/phpunit.xml $COVERAGE_OUT $COVERAGE_HTML_REPORT_OUT --testsuite $TEST_SUITE $PHPUNIT_EXTRA_OPTIONS | tee phpunit.out
     fi
 
-    ls -lah
+    ls -lah html_report
 
     exit_code="${PIPESTATUS[0]}"
 
