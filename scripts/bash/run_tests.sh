@@ -60,6 +60,10 @@ if [ -n "$TEST_SUITE" ]; then
     fi
   elif [ "$TEST_SUITE" == "PluginTests" ]; then
     if [ -n "$PLUGIN_NAME" ]; then
+      if [ "${COVERAGE_HTML_REPORT}" = "true" ]; then
+        mkdir -p html-report
+        echo -e "Created directory for html report"
+      fi
       if [ -d "plugins/$PLUGIN_NAME/Test" ]; then
         ./vendor/phpunit/phpunit/phpunit --log-junit phpjunit.xml --configuration ./tests/PHPUnit/phpunit.xml $COVERAGE_OUT $COVERAGE_HTML_REPORT_OUT --testsuite $TEST_SUITE $PHPUNIT_EXTRA_OPTIONS plugins/$PLUGIN_NAME/Test/  | tee phpunit.out
       elif [ -d "plugins/$PLUGIN_NAME/tests" ]; then
