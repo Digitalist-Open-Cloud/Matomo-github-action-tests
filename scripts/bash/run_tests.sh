@@ -74,7 +74,6 @@ if [ -n "$TEST_SUITE" ]; then
     fi
 
     ls -lah html_report
-    pwd -p
 
     exit_code="${PIPESTATUS[0]}"
 
