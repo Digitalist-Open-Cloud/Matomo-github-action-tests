@@ -55,14 +55,14 @@ if [ -n "$TEST_SUITE" ]; then
   elif [ "$TEST_SUITE" == "PluginTests" ]; then
     if [ -n "$PLUGIN_NAME" ]; then
       if [ -d "plugins/$PLUGIN_NAME/Test" ]; then
-        ./vendor/phpunit/phpunit/phpunit --log-junit phpjunit.xml --configuration ./tests/PHPUnit/phpunit.xml $COVERAGE_OUT --colors --testsuite $TEST_SUITE $PHPUNIT_EXTRA_OPTIONS plugins/$PLUGIN_NAME/Test/  | tee phpunit.out
+        ./vendor/phpunit/phpunit/phpunit --log-junit phpjunit.xml --configuration ./tests/PHPUnit/phpunit.xml $COVERAGE_OUT --testsuite $TEST_SUITE $PHPUNIT_EXTRA_OPTIONS plugins/$PLUGIN_NAME/Test/  | tee phpunit.out
       elif [ -d "plugins/$PLUGIN_NAME/tests" ]; then
-        ./vendor/phpunit/phpunit/phpunit --log-junit phpjunit.xml --configuration ./tests/PHPUnit/phpunit.xml $COVERAGE_OUT --colors --testsuite $TEST_SUITE $PHPUNIT_EXTRA_OPTIONS plugins/$PLUGIN_NAME/tests/ | tee phpunit.out
+        ./vendor/phpunit/phpunit/phpunit --log-junit phpjunit.xml --configuration ./tests/PHPUnit/phpunit.xml $COVERAGE_OUT --testsuite $TEST_SUITE $PHPUNIT_EXTRA_OPTIONS plugins/$PLUGIN_NAME/tests/ | tee phpunit.out
       else
-        ./vendor/phpunit/phpunit/phpunit --log-junit phpjunit.xml --configuration ./tests/PHPUnit/phpunit.xml $COVERAGE_OUT --colors --testsuite $TEST_SUITE --group $PLUGIN_NAME $PHPUNIT_EXTRA_OPTIONS | tee phpunit.out
+        ./vendor/phpunit/phpunit/phpunit --log-junit phpjunit.xml --configuration ./tests/PHPUnit/phpunit.xml $COVERAGE_OUT --testsuite $TEST_SUITE --group $PLUGIN_NAME $PHPUNIT_EXTRA_OPTIONS | tee phpunit.out
       fi
     else
-      ./vendor/phpunit/phpunit/phpunit --log-junit phpjunit.xml --configuration ./tests/PHPUnit/phpunit.xml $COVERAGE_OUT --testsuite $TEST_SUITE --colors $PHPUNIT_EXTRA_OPTIONS | tee phpunit.out
+      ./vendor/phpunit/phpunit/phpunit --log-junit phpjunit.xml --configuration ./tests/PHPUnit/phpunit.xml $COVERAGE_OUT --testsuite $TEST_SUITE $PHPUNIT_EXTRA_OPTIONS | tee phpunit.out
     fi
 
     exit_code="${PIPESTATUS[0]}"
