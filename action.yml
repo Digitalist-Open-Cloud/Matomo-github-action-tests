@@ -251,6 +251,9 @@ runs:
     - name: Upload Code Coverage HTML Report
       if: ${{ inputs.coverage-html-report == 'true' }}
       uses: actions/upload-artifact@v4
+      run: |
+        - ls -lah
+        - pwd -p
       with:
         name: html-report
         path: html_report/
