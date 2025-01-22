@@ -70,6 +70,8 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Matomo license existence checker
+      uses: Digitalist-Open-Cloud/matomo-license-existence-checker@main
     - name: start mysql services
       if: inputs.mysql-service == 'true' && inputs.mysql-engine == 'Mysql'
       shell: bash
