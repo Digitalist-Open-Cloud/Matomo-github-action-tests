@@ -4,10 +4,10 @@ GREEN='\033[0;32m'
 SET='\033[0m'
 
 
-if [[ -z "${COVERAGE}" ]]; then
-  COVERAGE_OUT='--coverage-text'
+if [[ "${COVERAGE}" != "none" ]]; then
+    COVERAGE_OUT='--coverage-text'
 else
-  COVERAGE_OUT=''
+    COVERAGE_OUT=''
 fi
 
 if [ "$COVERAGE_HTML_REPORT" = "true" ]; then
