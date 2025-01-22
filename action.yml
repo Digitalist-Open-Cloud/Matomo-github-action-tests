@@ -177,6 +177,7 @@ runs:
         PLUGIN_NAME: ${{ inputs.plugin-name }}
         WORKSPACE: ${{ github.workspace }}
         ACTION_PATH: ${{ github.action_path }}
+        COVERAGE: ${{ inputs.coverage }}
 
     - name: checkout additional plugins
       if: inputs.dependent-plugins != ''
@@ -200,6 +201,7 @@ runs:
         PLUGIN_NAME: ${{ inputs.plugin-name }}
         WORKSPACE: ${{ github.workspace }}
         ACTION_PATH: ${{ github.action_path }}
+        COVERAGE: ${{ inputs.coverage }}
 
     - name: Install needed packages
       shell: bash

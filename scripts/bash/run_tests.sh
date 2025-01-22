@@ -3,6 +3,13 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 SET='\033[0m'
 
+
+if [[ -z "${COVERAGE}" ]]; then
+  echo -e "${GREEN}Coverage is set"
+else
+  echo -e "${GREEN}Coverage is not set"
+fi
+
 if [ -n "$TEST_SUITE" ]; then
   echo -e "${GREEN}Executing tests in test suite $TEST_SUITE...${SET}"
   if [ -n "$PLUGIN_NAME" ]; then
