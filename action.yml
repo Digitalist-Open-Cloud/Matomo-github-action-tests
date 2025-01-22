@@ -70,7 +70,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-
     - name: start mysql services
       if: inputs.mysql-service == 'true' && inputs.mysql-engine == 'Mysql'
       shell: bash
@@ -253,5 +252,5 @@ runs:
       uses: actions/upload-artifact@v4
       with:
         name: html-report
-        path: ${{ github.workspace }}/html_report
+        path: tests/PHPUnit/html_report/
         include-hidden-files: true
