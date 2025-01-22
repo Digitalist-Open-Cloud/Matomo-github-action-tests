@@ -227,6 +227,8 @@ runs:
         GITHUB_IS_TRIGGERED_BY_PUSH: ${{ github.event_name == 'push' && 'true' || 'false' }}
         MYSQL_ADAPTER: ${{ inputs.mysql-driver }}
         MYSQL_ENGINE: ${{ inputs.mysql-engine }}
+        COVERAGE: ${{ inputs.coverage }}
+        COVERAGE_HTML_REPORT: ${{ inputs.coverage-html-report }}
 
     - name: Debug informations
       if: ${{ inputs.debug_mode == 'true' }}

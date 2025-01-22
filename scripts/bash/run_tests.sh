@@ -10,7 +10,7 @@ else
   COVERAGE_OUT=''
 fi
 
-if [ "${COVERAGE_HTML_REPORT}" = "true" ]; then
+if [ "$COVERAGE_HTML_REPORT" = "true" ]; then
   COVERAGE_HTML_REPORT_OUT='--coverage-html html_report'
 else
   COVERAGE_HTML_REPORT_OUT=''
