@@ -11,7 +11,7 @@ else
 fi
 
 if [ "$COVERAGE_HTML_REPORT" = "true" ]; then
-  COVERAGE_HTML_REPORT_OUT='--coverage-html html_report'
+  COVERAGE_HTML_REPORT_OUT="--coverage-html ${{ github.workspace }}/html_report"
 else
   COVERAGE_HTML_REPORT_OUT=''
 fi
