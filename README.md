@@ -147,4 +147,5 @@ jobs:
 | `ui-test-options` | Additional options for UI tests | - |
 | `phpunit-test-options` | Additional options for PHPUnit tests | - |
 | `coverage` | Code coverage reporting options: `none`, `xdebug`, `pcov` | - |
+| `coverage-html-report` | Code coverage report as HTML. Options: `false`, `true` | `false` |
 | `debug` | Output debug information like PHP config, Matomo config | `false` |
