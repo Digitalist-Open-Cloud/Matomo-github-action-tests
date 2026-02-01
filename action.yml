@@ -76,7 +76,7 @@ runs:
       if: inputs.mysql-service == 'true' && inputs.mysql-engine == 'Mysql'
       shell: bash
       run: |
-        docker run --health-cmd='mysqladmin ping --silent' -d --tmpfs /var/lib/mysql:rw --tmpfs /bitnami/mysql/data:rw -v ${{ github.action_path }}/artifacts/my.cnf:/opt/bitnami/mysql/conf/my_custom.cnf:ro --name mysql -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MYSQL_DATABASE=matomo_tests bitnami/mysql:8.0
+        docker run --health-cmd='mysqladmin ping --silent' -d --tmpfs /var/lib/mysql:rw --tmpfs /bitnami/mysql/data:rw -v ${{ github.action_path }}/artifacts/my.cnf:/opt/bitnami/mysql/conf/my_custom.cnf:ro --name mysql -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MYSQL_DATABASE=matomo_tests bitnamilegacy/mysql:8.0
         sleep 20
         mysql -h127.0.0.1 -uroot -e "SET GLOBAL sql_mode = 'NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES';SET GLOBAL wait_timeout = 36000;SET GLOBAL max_allowed_packet = 134209536;"
 
@@ -84,7 +84,7 @@ runs:
       if: inputs.mysql-service == 'true' && inputs.mysql-engine == 'Mariadb'
       shell: bash
       run: |
-        docker run -d --tmpfs /var/lib/mariadb:rw --tmpfs /bitnami/mariadb/data:rw -v ${{ github.action_path }}/artifacts/my.cnf:/opt/bitnami/mariadb/conf/my_custom.cnf:ro --name mariadb -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MARIADB_DATABASE=matomo_tests bitnami/mariadb:11.6
+        docker run -d --tmpfs /var/lib/mariadb:rw --tmpfs /bitnami/mariadb/data:rw -v ${{ github.action_path }}/artifacts/my.cnf:/opt/bitnami/mariadb/conf/my_custom.cnf:ro --name mariadb -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MARIADB_DATABASE=matomo_tests bitnamilegacy/mariadb:11.6
         sleep 10
         mysql -h127.0.0.1 -uroot -e "SET GLOBAL sql_mode = 'NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES';SET GLOBAL wait_timeout = 36000;SET GLOBAL max_allowed_packet = 134209536;"
 
@@ -100,7 +100,7 @@ runs:
       if: inputs.redis-service == 'true'
       shell: bash
       run: |
-        docker run -d --name redis -e ALLOW_EMPTY_PASSWORD=yes -p 6379:6379 bitnami/redis:latest
+        docker run -d --name redis -e ALLOW_EMPTY_PASSWORD=yes -p 6379:6379 bitnamilegacy/redis:8.2.1
         docker run -d --name mymaster -e REDIS_MASTER_HOST=localhost -p 26379:26379 bitnami/redis-sentinel:latest
 
     - name: Setup PHP
