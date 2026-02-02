@@ -70,13 +70,20 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Lower case
+      id: props
+      shell: bash
+      run: |
+        # Runner real id
+        REPO_PATH=$(echo 'console.log("{{ github.action_path }}".toLowerCase())' | node -);
+        echo "repo_path=${REPO_PATH}" >> $GITHUB_OUTPUT
     - name: Matomo license existence checker
       uses: Digitalist-Open-Cloud/matomo-license-existence-checker@main
     - name: start mysql services
       if: inputs.mysql-service == 'true' && inputs.mysql-engine == 'Mysql'
       shell: bash
       run: |
-        docker run --health-cmd='mysqladmin ping --silent' -d --tmpfs /var/lib/mysql:rw ${{ github.action_path }}/artifacts/my.cnf:/etc/mysql/conf.d/my_custom.cnf:ro --name mysql -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MYSQL_DATABASE=matomo_tests mysql:9.6.0
+        docker run --health-cmd='mysqladmin ping --silent' -d --tmpfs /var/lib/mysql:rw ${{ github.steps.props.outputs.repo_path }}/artifacts/my.cnf:/etc/mysql/conf.d/my_custom.cnf:ro --name mysql -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MYSQL_DATABASE=matomo_tests mysql:9.6.0
         sleep 20
         mysql -h127.0.0.1 -uroot -e "SET GLOBAL sql_mode = 'NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES';SET GLOBAL wait_timeout = 36000;SET GLOBAL max_allowed_packet = 134209536;"
 
@@ -84,7 +91,7 @@ runs:
       if: inputs.mysql-service == 'true' && inputs.mysql-engine == 'Mariadb'
       shell: bash
       run: |
-        docker run -d --tmpfs /var/lib/mariadb:rw -v ${{ github.action_path }}/artifacts/my.cnf:/etc/mysql/conf.d/my_custom.cnf:ro --name mariadb -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MARIADB_DATABASE=matomo_tests mariadb:11.8.5
+        docker run -d --tmpfs /var/lib/mariadb:rw -v ${{ github.steps.props.outputs.repo_path }}/artifacts/my.cnf:/etc/mysql/conf.d/my_custom.cnf:ro --name mariadb -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MARIADB_DATABASE=matomo_tests mariadb:11.8.5
         sleep 10
         mysql -h127.0.0.1 -uroot -e "SET GLOBAL sql_mode = 'NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES';SET GLOBAL wait_timeout = 36000;SET GLOBAL max_allowed_packet = 134209536;"
 
