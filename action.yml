@@ -77,16 +77,14 @@ runs:
       shell: bash
       run: |
         docker run -d --tmpfs /var/lib/mysql:rw -v ${{ github.action_path }}/artifacts/my.cnf:/etc/mysql/conf.d/my_custom.cnf:ro --name mysql -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MYSQL_DATABASE=matomo_tests mysql:9.6.0
-        sleep 60
-        mysql -h127.0.0.1 -uroot -e "SET GLOBAL sql_mode = 'NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES';SET GLOBAL wait_timeout = 36000;SET GLOBAL max_allowed_packet = 134209536;"
+        sleep 20
 
     - name: start mariadb services
       if: inputs.mysql-service == 'true' && inputs.mysql-engine == 'Mariadb'
       shell: bash
       run: |
         docker run -d --tmpfs /var/lib/mariadb:rw -v ${{ github.action_path }}/artifacts/my.cnf:/etc/mysql/conf.d/my_custom.cnf:ro --name mariadb -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MARIADB_DATABASE=matomo_tests mariadb:11.8.5
-        sleep 60
-        mysql -h127.0.0.1 -uroot -e "SET GLOBAL sql_mode = 'NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES';SET GLOBAL wait_timeout = 36000;SET GLOBAL max_allowed_packet = 134209536;"
+        sleep 20
 
     - name: start tidb services
       if: inputs.mysql-service == 'true' && inputs.mysql-engine == 'Tidb'
