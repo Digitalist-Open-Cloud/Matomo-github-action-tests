@@ -72,10 +72,17 @@ runs:
   steps:
     - name: Matomo license existence checker
       uses: Digitalist-Open-Cloud/matomo-license-existence-checker@main
+
+    - name: Install MySQL client
+      if: inputs.mysql-service == 'true'
+      shell: bash
+      run: sudo apt-get update && sudo apt-get install -y default-mysql-client
+
     - name: start mysql services
       if: inputs.mysql-service == 'true' && inputs.mysql-engine == 'Mysql'
       shell: bash
       run: |
+        docker rm -f mysql 2>/dev/null || true
         docker run -d --tmpfs /var/lib/mysql:rw -v ${{ github.action_path }}/artifacts/my.cnf:/etc/mysql/conf.d/my_custom.cnf:ro --name mysql -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MYSQL_DATABASE=matomo_tests mysql:9.6.0
         for i in {1..60}; do
           if mysql -h127.0.0.1 -uroot -e "SELECT 1" &>/dev/null; then
@@ -88,6 +95,7 @@ runs:
       if: inputs.mysql-service == 'true' && inputs.mysql-engine == 'Mariadb'
       shell: bash
       run: |
+        docker rm -f mariadb 2>/dev/null || true
         docker run -d --tmpfs /var/lib/mariadb:rw -v ${{ github.action_path }}/artifacts/my.cnf:/etc/mysql/conf.d/my_custom.cnf:ro --name mariadb -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MARIADB_DATABASE=matomo_tests mariadb:11.8.5
         for i in {1..60}; do
           if mysql -h127.0.0.1 -uroot -e "SELECT 1" &>/dev/null; then
@@ -100,7 +108,8 @@ runs:
       if: inputs.mysql-service == 'true' && inputs.mysql-engine == 'Tidb'
       shell: bash
       run: |
-        docker run -d -p 3306:4000 pingcap/tidb:latest
+        docker rm -f tidb 2>/dev/null || true
+        docker run -d -p 3306:4000 --name tidb pingcap/tidb:latest
         for i in {1..60}; do
           if mysql -h127.0.0.1 -P4000 -uroot -e "SELECT 1" &>/dev/null; then
             break
