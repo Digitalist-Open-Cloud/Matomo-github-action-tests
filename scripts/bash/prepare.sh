@@ -46,9 +46,9 @@ fi
 sed "s/PDO_MYSQL/$MYSQL_ADAPTER/g; s/schema = Mysql/schema = $MYSQL_ENGINE/g" $ACTION_PATH/artifacts/config.ini.github.php >config/config.ini.php
 
 # for plugin builds on minimal required matomo version disable deprecation notices
-if [ "$PLUGIN_NAME" != '' ] && [ "$MATOMO_TEST_TARGET" == "minimum_required_matomo" ]; then
-  sed -i -E "s/error_reporting\(.*\)/error_reporting(E_ALL \& ~E_DEPRECATED)/g" core/bootstrap.php
-fi
+#if [ "$PLUGIN_NAME" != '' ] && [ "$MATOMO_TEST_TARGET" == "minimum_required_matomo" ]; then
+sed -i -E "s/error_reporting\(.*\)/error_reporting(E_ALL \& ~E_DEPRECATED)/g" core/bootstrap.php
+#fi
 
 # setup js and phpunit.xml
 if [ "$TEST_SUITE" = "UI" ] || [ "$TEST_SUITE" = "JS" ]; then
