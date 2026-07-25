@@ -36,8 +36,8 @@ echo -e "${GREEN}composer install${SET}"
 composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer false
 composer install --ignore-platform-reqs
 
-#php 8.1 require unitTest > 9
-if [ "$PHP_VERSION" = "8.1" ] || [ "$PHP_VERSION" = "8.2" ] || [ "$PHP_VERSION" = "8.3" ]; then
+# PHP 8.4+ requires PHPUnit > 9
+if [ "$PHP_VERSION" = "8.4" ] || [ "$PHP_VERSION" = "8.5" ]; then
   composer remove --dev phpunit/phpunit
   composer require --dev phpunit/phpunit ~9.3 --ignore-platform-reqs
 fi
