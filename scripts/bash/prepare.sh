@@ -18,17 +18,6 @@ if [ "$TEST_SUITE" = "UI" ]; then
     cd $WORKSPACE/matomo/plugins/$PLUGIN_NAME
     git lfs pull --exclude=
   fi
-  # echo -e "${GREEN}setup fonts${SET}"
-  # mkdir $HOME/.fonts
-  # cp $ACTION_PATH/artifacts/fonts/* $HOME/.fonts
-  # fc-cache -f -v
-  # ls $HOME/.fonts
-  # sudo sed -i -E 's/name="memory" value="[^"]+"/name="memory" value="2GiB"/g' /etc/ImageMagick-6/policy.xml
-  # sudo sed -i -E 's/name="width" value="[^"]+"/name="width" value="64KP"/g' /etc/ImageMagick-6/policy.xml
-  # sudo sed -i -E 's/name="height" value="[^"]+"/name="height" value="64KP"/g' /etc/ImageMagick-6/policy.xml
-  # sudo sed -i -E 's/name="area" value="[^"]+"/name="area" value="1GiB"/g' /etc/ImageMagick-6/policy.xml
-  # sudo sed -i -E 's/name="disk" value="[^"]+"/name="area" value="4GiB"/g' /etc/ImageMagick-6/policy.xml
-
 fi
 
 cd $WORKSPACE/matomo
@@ -37,19 +26,19 @@ echo -e "${GREEN}composer install${SET}"
 composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer false
 composer install --ignore-platform-reqs
 
-# PHP 8.4+ requires PHPUnit > 9
-if [ "$PHP_VERSION" = "8.4" ] || [ "$PHP_VERSION" = "8.5" ]; then
-  composer remove --dev phpunit/phpunit
-  composer require --dev phpunit/phpunit ~9.3 --ignore-platform-reqs
+# PHP 8.4 and later need PHPUnit 9
+if php -r 'exit(version_compare(PHP_VERSION, "8.4", ">=") ? 0 : 1);'; then
+  composer require --dev phpunit/phpunit:~9.3 --ignore-platform-reqs --update-with-all-dependencies
 fi
 
 # setup config
 sed "s/PDO_MYSQL/$MYSQL_ADAPTER/g; s/schema = Mysql/schema = $MYSQL_ENGINE/g" $ACTION_PATH/artifacts/config.ini.github.php >config/config.ini.php
 
-# for plugin builds on minimal required matomo version disable deprecation notices
-#if [ "$PLUGIN_NAME" != '' ] && [ "$MATOMO_TEST_TARGET" == "minimum_required_matomo" ]; then
-sed -i -E "s/error_reporting\(.*\)/error_reporting(E_ALL \& ~E_DEPRECATED)/g" core/bootstrap.php
-#fi
+# Matomo and its libraries raise deprecation notices on newer PHP versions, so they are hidden
+# unless asked for.
+if [ "$SHOW_DEPRECATIONS" != "true" ]; then
+  sed -i -E "s/error_reporting\(.*\)/error_reporting(E_ALL \& ~E_DEPRECATED)/g" core/bootstrap.php
+fi
 
 # setup js and phpunit.xml
 if [ "$TEST_SUITE" = "UI" ] || [ "$TEST_SUITE" = "JS" ]; then

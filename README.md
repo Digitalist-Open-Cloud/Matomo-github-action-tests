@@ -59,7 +59,15 @@ Defines if a redis master and sentinel server should be set up before testing.
 
 ### mysql-service
 
-Defines if a MySQL server should be set up before testing. If so a MySQL 8.0 server using tmpfs will be set up.
+Defines if a database server should be set up before testing. If so, a server using tmpfs will be set up.
+
+### mysql-engine
+
+The database engine to set up: `Mysql` (default), `Mariadb` or `Tidb`.
+
+### mysql-version
+
+The version of MySQL to set up when the engine is `Mysql`, as a tag of the `mysql` image. Defaults to `5.7`.
 
 ### mysql-driver
 
@@ -97,6 +105,10 @@ Additional options to provide for PHPUnit tests. This can be used to provide deb
 
 If you want code coverage reports, possible values are none, xdebug, pcov.
 
+### show-deprecations
+
+Set to 'true' to have deprecation notices of PHP reported while the tests run. They are hidden by default, as Matomo and its libraries raise them on newer PHP versions.
+
 ### debug
 
 Set to 'true' to output the PHP configuration, the Matomo configuration and the log files after the tests, also when they fail. Defaults to 'false'.
@@ -108,7 +120,7 @@ on:
   pull_request: {}
   workflow_dispatch: {}
   push:
-    branches: ["main"]
+    branches: ["5.x-dev"]
 jobs:
   plugin:
     runs-on: ubuntu-24.04
@@ -118,7 +130,9 @@ jobs:
         php: [ '8.4', '8.5' ]
         target: ['minimum_required_matomo', 'maximum_supported_matomo']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Run tests
         uses: Digitalist-Open-Cloud/Matomo-github-action-tests@main
         with:
@@ -139,7 +153,9 @@ jobs:
 | `php-version` | PHP version to use for testing | - |
 | `node-version` | Node version to use for testing (Not needed for PHP tests) | - |
 | `redis-service` | Whether to set up redis master and sentinel server | - |
-| `mysql-service` | Whether to set up MySQL server (MySQL 8.0 with tmpfs) | - |
+| `mysql-service` | Whether to set up a database server (with tmpfs) | `true` |
+| `mysql-engine` | Database engine: `Mysql`, `Mariadb` or `Tidb` | `Mysql` |
+| `mysql-version` | Version of MySQL when the engine is `Mysql` | `5.7` |
 | `mysql-driver` | MySQL adapter for Matomo: `PDO_MYSQL` or `MYSQLI` | `PDO_MYSQL` |
 | `dependent-plugins` | Additional plugins to check out before testing (space or comma separated list) | - |
 | `github-token` | GitHub access token for private repository access | - |
@@ -148,4 +164,5 @@ jobs:
 | `phpunit-test-options` | Additional options for PHPUnit tests | - |
 | `coverage` | Code coverage reporting options: `none`, `xdebug`, `pcov` | - |
 | `coverage-html-report` | Code coverage report as HTML. Options: `false`, `true` | `false` |
+| `show-deprecations` | Report deprecation notices of PHP while the tests run | `false` |
 | `debug` | Output debug information like PHP config, Matomo config | `false` |

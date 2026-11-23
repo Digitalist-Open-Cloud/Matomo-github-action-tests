@@ -60,13 +60,8 @@ function getMinVersion(array $requiredVersions)
         $version    = $required['version'];
 
         if (in_array($comparison, ['>=', '>', '=='])) {
-            if (empty($minVersion)) {
-                $minVersion = $version;
-                break;
-            } elseif (version_compare($version, $minVersion, '<=')) {
-                $minVersion = $version;
-                break;
-            }
+            $minVersion = $version;
+            break;
         }
     }
 
@@ -116,25 +111,22 @@ $pluginJsonPath     = "$pathToMatomo/../$pluginName/plugin.json";
 $pluginJsonContents = file_get_contents($pluginJsonPath);
 $pluginJsonContents = json_decode($pluginJsonContents, true);
 
-$allRequiredVersions   = getRequiredMatomoVersions($pluginJsonContents, true);
-$validRequiredVersions = getRequiredMatomoVersions($pluginJsonContents, true);
+$allRequiredVersions = getRequiredMatomoVersions($pluginJsonContents, true);
 
 if ($returnMaxVersion) {
     $versionToReturn = getMaxVersion($allRequiredVersions);
 
     if (empty($versionToReturn)) {
         // if no upper bound found, use the dev branch of the minimum required version, as we assume plugins are never compatible with next major release
-        $minVersion      = getMinVersion($validRequiredVersions);
+        $minVersion      = getMinVersion($allRequiredVersions);
         $versionToReturn = substr($minVersion, 0, 1) . '.x-dev';
     }
 } else {
-    $versionToReturn = getMinVersion($validRequiredVersions);
+    $versionToReturn = getMinVersion($allRequiredVersions);
 }
 
 if (empty($versionToReturn)) {
-    $requiredVersions = $allRequiredVersions;
-    $versionToReturn  = getMinVersion($requiredVersions);
-    $versionToReturn  = !empty($versionToReturn) ? $versionToReturn : '4.x-dev';
+    $versionToReturn = '4.x-dev';
 }
 
 echo $versionToReturn;
