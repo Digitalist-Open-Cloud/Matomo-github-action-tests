@@ -56,4 +56,4 @@ fi
 
 echo "Initializing submodules"
 git submodule init -q
-git submodule update -q || true
+git submodule update -q --depth 1 --jobs 8 || git submodule update -q || true
