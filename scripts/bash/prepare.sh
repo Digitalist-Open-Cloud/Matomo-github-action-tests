@@ -57,7 +57,7 @@ if [ "$TEST_SUITE" = "UI" ] || [ "$TEST_SUITE" = "JS" ]; then
 else
   cp ./tests/PHPUnit/phpunit.xml.dist ./tests/PHPUnit/phpunit.xml
   if [ -n "$PLUGIN_NAME" ]; then
-    sed -n '/<filter>/{p;:a;N;/<\/filter>/!ba;s/.*\n/<whitelist addUncoveredFilesFromWhitelist=\"true\">\n<directory suffix=\".php\">..\/..\/plugins\/'$PLUGIN_NAME'<\/directory>\n<exclude>\n<directory suffix=\".php\">..\/..\/plugins\/'$PLUGIN_NAME'\/tests<\/directory>\n<directory suffix=\".php\">..\/..\/plugins\/'$PLUGIN_NAME'\/Test<\/directory>\n<directory suffix=\".php\">..\/..\/plugins\/'$PLUGIN_NAME'\/Updates<\/directory>\n<\/exclude>\n<\/whitelist>\n/};p' ./tests/PHPUnit/phpunit.xml >./tests/PHPUnit/phpunit.xml.new && mv ./tests/PHPUnit/phpunit.xml.new ./tests/PHPUnit/phpunit.xml
+    php "$ACTION_PATH/scripts/php/scope_coverage.php" ./tests/PHPUnit/phpunit.xml "$PLUGIN_NAME"
   fi
 fi
 
