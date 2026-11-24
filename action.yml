@@ -35,9 +35,13 @@ inputs:
     required: false
     default: 'true'
   mysql-engine:
-    description: "MySQL database engine to use. Can be 'Mysql', 'Mariadb' or 'Tidb'"
+    description: "Database engine to use. Can be 'Mariadb', 'Mysql' or 'Tidb'"
     required: false
-    default: 'Mysql'
+    default: 'Mariadb'
+  mariadb-version:
+    description: "Version of MariaDB to set up when mysql-engine is 'Mariadb'. A tag of the mariadb image, e.g. '11.4' or '10.6'"
+    required: false
+    default: '11.4'
   mysql-version:
     description: "Version of MySQL to set up when mysql-engine is 'Mysql'. A tag of the mysql image, e.g. '5.7' or '8.4'"
     required: false
@@ -134,33 +138,32 @@ runs:
     - name: start mariadb services
       if: inputs.mysql-service == 'true' && inputs.mysql-engine == 'Mariadb'
       shell: bash
+      env:
+        MARIADB_VERSION: ${{ inputs.mariadb-version }}
       run: |
         docker rm -f mariadb 2>/dev/null || true
-        docker run -d --tmpfs /var/lib/mariadb:rw -v ${{ github.action_path }}/artifacts/my.cnf:/etc/mysql/conf.d/my_custom.cnf:ro --name mariadb -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -e MARIADB_DATABASE=matomo_tests mariadb:11.8.5
+        docker run -d \
+          --tmpfs /var/lib/mysql:rw \
+          -v ${{ github.action_path }}/artifacts/my.cnf:/etc/mysql/conf.d/my_custom.cnf:ro \
+          --name mariadb \
+          -p 3306:3306 \
+          -e MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes \
+          -e MARIADB_DATABASE=matomo_tests "mariadb:$MARIADB_VERSION"
+        # Asked over the network: while the container sets itself up it only answers inside.
         echo "Waiting for MariaDB to be ready..."
         for i in {1..60}; do
-          if docker exec mariadb mysql -uroot -e "SELECT 1" &>/dev/null; then
-            echo "MariaDB is ready inside container!"
+          if mysql -h127.0.0.1 -uroot -e "SELECT 1" &>/dev/null; then
+            echo "MariaDB is ready!"
             break
           fi
           sleep 1
-        done
-        docker port mariadb
-        docker logs mariadb
-        echo "Testing connection from outside..."
-        for i in {1..10}; do
-          if mysql -h127.0.0.1 -uroot -e "SELECT 1" &>/dev/null; then
-            echo "MariaDB accessible from outside!"
-            break
-          fi
-          echo "Attempt $i: Connection failed"
-          sleep 2
         done
         if ! mysql -h127.0.0.1 -uroot -e "SELECT 1" &>/dev/null; then
           echo "::error::MariaDB did not become reachable on 127.0.0.1:3306"
           docker logs mariadb
           exit 1
         fi
+        mysql -h127.0.0.1 -uroot -e "SELECT VERSION()"
 
     - name: start tidb services
       if: inputs.mysql-service == 'true' && inputs.mysql-engine == 'Tidb'

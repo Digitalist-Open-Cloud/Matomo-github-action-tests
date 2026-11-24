@@ -31,6 +31,11 @@ if php -r 'exit(version_compare(PHP_VERSION, "8.4", ">=") ? 0 : 1);'; then
   composer require --dev phpunit/phpunit:~9.3 --ignore-platform-reqs --update-with-all-dependencies
 fi
 
+# Matomo versions without a schema for MariaDB use the MySQL one with it.
+if [ "$MYSQL_ENGINE" = "Mariadb" ] && [ ! -f core/Db/Schema/Mariadb.php ]; then
+  MYSQL_ENGINE=Mysql
+fi
+
 # setup config
 sed "s/PDO_MYSQL/$MYSQL_ADAPTER/g; s/schema = Mysql/schema = $MYSQL_ENGINE/g" $ACTION_PATH/artifacts/config.ini.github.php >config/config.ini.php
 

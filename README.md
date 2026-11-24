@@ -63,7 +63,11 @@ Defines if a database server should be set up before testing. If so, a server us
 
 ### mysql-engine
 
-The database engine to set up: `Mysql` (default), `Mariadb` or `Tidb`.
+The database engine to set up: `Mariadb` (default), `Mysql` or `Tidb`.
+
+### mariadb-version
+
+The version of MariaDB to set up when the engine is `Mariadb`, as a tag of the `mariadb` image. Defaults to `11.4`, the newest 11.4 release.
 
 ### mysql-version
 
@@ -154,7 +158,8 @@ jobs:
 | `node-version` | Node version to use for testing (Not needed for PHP tests) | - |
 | `redis-service` | Whether to set up redis master and sentinel server | - |
 | `mysql-service` | Whether to set up a database server (with tmpfs) | `true` |
-| `mysql-engine` | Database engine: `Mysql`, `Mariadb` or `Tidb` | `Mysql` |
+| `mysql-engine` | Database engine: `Mariadb`, `Mysql` or `Tidb` | `Mariadb` |
+| `mariadb-version` | Version of MariaDB when the engine is `Mariadb` | `11.4` |
 | `mysql-version` | Version of MySQL when the engine is `Mysql` | `5.7` |
 | `mysql-driver` | MySQL adapter for Matomo: `PDO_MYSQL` or `MYSQLI` | `PDO_MYSQL` |
 | `dependent-plugins` | Additional plugins to check out before testing (space or comma separated list) | - |
